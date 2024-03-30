@@ -34,35 +34,43 @@ package Teacher_portel;
 				while(true)// Main menu loop
 				{
 				System.out.println("Enter your choice from below options");
-				System.out.println("1:for showing the List of teacher");
-				System.out.println("2:for add the new teacher in the list");
-				System.out.println("3:for Updating the list of teacher");
-				System.out.println("4:for showing teacher account to teacher Id");
-				System.out.println("5:for deleting teacher from the list");
-				System.out.println("6:for showing customise list of Teacher");
-				System.out.println("7:Exit");
+				System.out.println("1:for Create the table");
+				System.out.println("2:for showing the List of teacher");
+				System.out.println("3:for add the new teacher in the list");
+				System.out.println("4:for Updating the list of teacher");
+				System.out.println("5:for showing teacher account to teacher Id");
+				System.out.println("6:for deleting teacher from the list");
+				System.out.println("7:for showing customise list of Teacher");
+				System.out.println("8:for deleting the table");
+				System.out.println("9:Exit");
 				int ch=sc.nextInt();
 				switch (ch) 
 				{
 				case 1:
-					view(conn);
+					create(conn);
 					break;
 				case 2:
-					new_input(conn);
+					view(conn);
 					break;
 				case 3:
-					update(conn);
+					new_input(conn);
 					break;
 				case 4:
-					row_view(conn);
+					update(conn);
 					break;
 				case 5:
-					delete_product(conn);
+					row_view(conn);
 					break;
 				case 6:
-					customize(conn);
+					delete_product(conn);
 					break;
 				case 7:
+					customize(conn);
+					break;
+				case 8:
+					drop(conn);
+					break;
+				case 9:
 					System.exit(0);// Exit the program
 					break;
 				default:
@@ -79,6 +87,20 @@ package Teacher_portel;
 			}
 			
 			
+		}
+		public void create(Connection conn) throws SQLException
+		{
+			String qur="Create table if not exists teacher(t_id int primary key auto_increment,t_name varchar(255),t_gender varchar(255),t_subject varchar(255))";
+			PreparedStatement st=conn.prepareStatement(qur);
+			int count5=st.executeUpdate();
+			if(count5>0)
+			{
+			System.out.println("Create table Successfully");
+			}
+			else
+			{
+				System.err.println("error in create query");
+			}
 		}
 		 // Method to view List of Teacher
 		public void view(Connection conn) throws SQLException
@@ -367,6 +389,24 @@ package Teacher_portel;
 			ans1=sc.next().charAt(0);
 		  }while(ans1=='Y' || ans1=='y');
 		 }
+		public void drop(Connection conn) throws SQLException
+		{
+			String confirm;
+			System.out.println("Are you sure for deleting the entered table"
+					+ "press Y for yes and N for No");
+			confirm=sc.next();
+			if(confirm.equalsIgnoreCase("Y"))
+			{
+			String qur="drop table teacher ";
+			PreparedStatement ps=conn.prepareStatement(qur);
+			ps.setInt(1, t_id);
+			ps.executeLargeUpdate();
+			System.out.println("table deleted successfully");
+			}
+			else
+			{
+				System.out.println("cancelling the deletion of record");
+			}
 		}
-	
+		}
 	
